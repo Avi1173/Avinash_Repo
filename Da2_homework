@@ -1,0 +1,220 @@
+1)print list of existing local user's and their homedirectory on console in following format (use awk with /etc/passwd file)
+user1 - /home/user1
+user2 - /home/user2
+
+
+# awk -F: '{print $1 " - " $6}' /etc/passwd
+root - /root
+bin - /bin
+daemon - /sbin
+adm - /var/adm
+lp - /var/spool/lpd
+sync - /sbin
+shutdown - /sbin
+halt - /sbin
+mail - /var/spool/mail
+operator - /root
+games - /usr/games
+ftp - /var/ftp
+nobody - /
+systemd-network - /
+dbus - /
+rpc - /var/lib/rpcbind
+libstoragemgmt - /var/run/lsm
+sshd - /var/empty/sshd
+rpcuser - /var/lib/nfs
+nfsnobody - /var/lib/nfs
+ec2-instance-connect - /home/ec2-instance-connect
+postfix - /var/spool/postfix
+chrony - /var/lib/chrony
+tcpdump - /
+ec2-user - /home/ec2-user
+
+or 
+# awk -F: '{print $1 " -user home directory is " $6}' /etc/passwd
+root -user home directory is /root
+bin -user home directory is /bin
+daemon -user home directory is /sbin
+adm -user home directory is /var/adm
+lp -user home directory is /var/spool/lpd
+sync -user home directory is /sbin
+shutdown -user home directory is /sbin
+halt -user home directory is /sbin
+mail -user home directory is /var/spool/mail
+operator -user home directory is /root
+games -user home directory is /usr/games
+ftp -user home directory is /var/ftp
+nobody -user home directory is /
+systemd-network -user home directory is /
+dbus -user home directory is /
+rpc -user home directory is /var/lib/rpcbind
+libstoragemgmt -user home directory is /var/run/lsm
+sshd -user home directory is /var/empty/sshd
+rpcuser -user home directory is /var/lib/nfs
+nfsnobody -user home directory is /var/lib/nfs
+ec2-instance-connect -user home directory is /home/ec2-instance-connect
+postfix -user home directory is /var/spool/postfix
+chrony -user home directory is /var/lib/chrony
+tcpdump -user home directory is /
+ec2-user -user home directory is /home/ec2-user
+
+
+2) Create file data.txt with below line. You need to replace "Nilesh" with your name in single command without opening file. (use sed)
+This is Nilesh and I am mad.
+
+# more data.txt
+Avinash is father of Vihaan
+sed -i 's/Avinash/Avi/' data.txt
+# more data.txt
+Avi is father of Vihaan
+
+?? How to change more than 2 words with sed ?? 
+
+3) Create bash script to Fetch list of uniq ip's with total number of request from that ip from access.log file. (hint - awk, wc, sort, uniq)
+i.e.
+83.149.9.216 - 23
+
+# cat access.log
+#!/bin/bash
+83.149.9.216 - 23
+123.786.234.90 - 24
+1.2.3 - 25
+4.5.6 - 28
+4.5.6 - 28
+
+# uniq -c access.log           
+      1 #!/bin/bash
+      1 83.149.9.216 - 23
+      1 123.786.234.90 - 24
+      1 1.2.3 - 25
+      2 4.5.6 - 28
+
+
+-c, --count prefix lines by the number of occurrences
+
+# wc access.log 
+ 6 16 83 access.log                 ( 6 lines , 16 column , 83 words ) 
+ 
+ # sort access.log
+1.2.3 - 25
+123.786.234.90 - 24
+4.5.6 - 28
+4.5.6 - 28
+83.149.9.216 - 23
+#!/bin/bash
+
+
+??awk - not getting ??
+
+
+4) create bash script which will ping each website mentioned in website.txt and get it's ipv4/ipv6 and create website-detail.txt with website and it's ip address in below format. (hint - use for loop, ping website, use awk to get ip)
+google.com [2404:6800:4009:80a::200e]
+
+# cat website.txt
+google.com
+yahoo.com
+gmail.com
+kahipan.com
+
+# for i in `cat website.txt`; do ping -v $i; echo  "=================== ping done ================";done
+ping: socket: Permission denied, attempting raw socket...
+PING google.com (172.217.4.110) 56(84) bytes of data.
+64 bytes from ord36s04-in-f110.1e100.net (172.217.4.110): icmp_seq=1 ttl=100 time=16.8 ms
+64 bytes from ord36s04-in-f110.1e100.net (172.217.4.110): icmp_seq=2 ttl=100 time=16.9 ms
+64 bytes from ord36s04-in-f110.1e100.net (172.217.4.110): icmp_seq=3 ttl=100 time=16.9 ms
+^C
+--- google.com ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2003ms
+rtt min/avg/max/mdev = 16.866/16.920/16.991/0.118 ms
+=================== ping done ================
+ping: socket: Permission denied, attempting raw socket...
+PING yahoo.com (74.6.143.26) 56(84) bytes of data.
+64 bytes from media-router-fp74.prod.media.vip.bf1.yahoo.com (74.6.143.26): icmp_seq=1 ttl=42 time=24.1 ms
+^C
+--- yahoo.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 24.172/24.172/24.172/0.000 ms
+=================== ping done ================
+ping: socket: Permission denied, attempting raw socket...
+PING gmail.com (216.58.192.197) 56(84) bytes of data.
+64 bytes from ord30s25-in-f197.1e100.net (216.58.192.197): icmp_seq=1 ttl=101 time=16.8 ms
+^C
+--- gmail.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 16.818/16.818/16.818/0.000 ms
+=================== ping done ================
+ping: socket: Permission denied, attempting raw socket...
+PING kahipan.com (64.62.143.78) 56(84) bytes of data.
+64 bytes from crocodile.cms500.com (64.62.143.78): icmp_seq=1 ttl=96 time=69.1 ms
+^C
+--- kahipan.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 69.152/69.152/69.152/0.000 ms
+=================== ping done ================
+[root@ip-172-31-26-56 ~]# cat website.txt
+google.com
+yahoo.com
+gmail.com
+kahipan.com
+
+# cat website.txt
+google.com [2404:6800:4009:80a::200e]
+
+[root@ip-172-31-26-56 ~]# awk '{print $2}' website.txt
+[2404:6800:4009:80a::200e]
+
+# cat website.txt
+google.com [2404:6800:4009:80a::200e]
+yahoo.com [2404:6800:4009:80a::200e]
+
+# awk '{print $2}' website.txt
+[2404:6800:4009:80a::200e]
+[2404:6800:4009:80a::200e]
+
+5) Write a bash script which will check /tmp/test directory exist or not, if directory not exist then it will create directory. (Hint - read question again)
+© 2020 GitHub, Inc.
+create 1 file 
+#  cat /tmp/avinash
+I love my INDIA
+
+# cat file_exist.txt
+FILE=/tmp/avinash
+if test -f "$FILE"; then
+    echo "$FILE exists."
+fi
+
+#./file_exist.txt
+/tmp/avinash exists.
+
+# cat file_exist.txt   ------------------- (/tmp/avinash_1 file is not created) 
+FILE=/tmp/avinash_1
+if test -f "$FILE"; then
+    echo "$FILE exists."
+else
+    echo "$FILE is not exists."
+fi
+
+# ./file_exist.txt
+/tmp/avinash_1 is not exists.
+
+
+# cat file_exist.txt
+filename=/tmp/avinash_1
+if [ ! -f $filename ]
+then
+    touch $filename
+fi
+
+# ./file_exist.txt
+
+# cd /tmp
+]# ls -lrth avinash
+avinash    avinash_1
+
+
+6) Create a bash script with six function usage, add, sub, mul, div, and get below input from user and as per the operation show output.
+    #What operation they want to perform (add,sub,mul,div), if user enter other than that it should execute usage funtion and exit the program.
+    #get num1
+    #get num2
+    
+    
